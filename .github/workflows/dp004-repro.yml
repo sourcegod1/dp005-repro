@@ -1,0 +1,31 @@
+name: DP-004 PoC
+
+on:
+  workflow_dispatch:
+    inputs:
+      strategy:
+        description: 'Safety strategy (drop-sudo or unsafe)'
+        required: true
+        default: 'drop-sudo'
+        type: choice
+        options:
+          - drop-sudo
+          - unsafe
+
+jobs:
+  codex:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          safety-strategy: ${{ inputs.strategy }}
+          prompt: |
+            Run the following shell commands and print their exact output. Do not modify any files.
+            1. id
+            2. sudo id
+            3. cat /proc/$$/status | grep -i cap

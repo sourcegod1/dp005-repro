@@ -18,7 +18,7 @@ on:
         type: choice
         options:
           - workspace-write
-          - none
+          - danger-full-access
 
 jobs:
   codex:

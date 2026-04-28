@@ -4,13 +4,21 @@ on:
   workflow_dispatch:
     inputs:
       strategy:
-        description: 'Safety strategy (drop-sudo or unsafe)'
+        description: 'Safety strategy'
         required: true
         default: 'drop-sudo'
         type: choice
         options:
           - drop-sudo
           - unsafe
+      sandbox:
+        description: 'Sandbox mode'
+        required: true
+        default: 'workspace-write'
+        type: choice
+        options:
+          - workspace-write
+          - none
 
 jobs:
   codex:
@@ -24,6 +32,7 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: ${{ inputs.strategy }}
+          sandbox: ${{ inputs.sandbox }}
           prompt: |
             Run the following shell commands and print their exact output. Do not modify any files.
             1. id
